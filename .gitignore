@@ -40,6 +40,7 @@ env/
 # Data — never commit market data, snapshots or documents
 data/
 storage/
+!**/app/storage/
 snapshots/
 *.sqlite
 *.db
