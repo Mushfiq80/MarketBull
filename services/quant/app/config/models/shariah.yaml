@@ -1,0 +1,79 @@
+# Shariah screening configuration.
+#
+# A SCREEN, not a certification and not a fatwa. The methodology must be chosen
+# with knowledgeable review before any of this is surfaced to users as guidance.
+# Thresholds below follow widely published conventions and are placeholders
+# pending that review.
+
+version: "shariah-0.1.0"
+status: "pending_scholarly_review"
+
+default_methodology: "aaoifi_style"
+
+methodologies:
+  aaoifi_style:
+    version: "0.1.0"
+    label: "AAOIFI-style screen (placeholder thresholds)"
+    reference: "Conventional AAOIFI-style activity and ratio screens. Requires review."
+    ratio_denominator: "market_cap"
+    prohibited_sectors:
+      - "BANK"
+      - "FINANCIAL INSTITUTIONS"
+      - "NBFI"
+      - "INSURANCE"
+      - "LIFE INSURANCE"
+      - "GENERAL INSURANCE"
+    prohibited_keywords:
+      - "conventional banking"
+      - "interest-based lending"
+      - "alcohol"
+      - "brewery"
+      - "distillery"
+      - "tobacco"
+      - "cigarette"
+      - "gambling"
+      - "casino"
+      - "lottery"
+      - "pork"
+      - "adult entertainment"
+      - "conventional insurance"
+    ratio_rules:
+      - metric: "interest_bearing_debt"
+        max_ratio: 0.30
+        description: "Interest-bearing debt must stay below 30% of the denominator."
+      - metric: "interest_income"
+        max_ratio: 0.05
+        description: "Income from non-compliant sources must stay below 5%."
+      - metric: "cash_and_interest_securities"
+        max_ratio: 0.30
+        description: "Cash plus interest-bearing securities must stay below 30%."
+      - metric: "accounts_receivable"
+        max_ratio: 0.45
+        description: "Receivables must stay below 45% of the denominator."
+
+  dses_reference:
+    version: "0.1.0"
+    label: "DSES index reference comparison"
+    reference: >
+      Compares against the published DSE Shariah index constituency. Requires the
+      official constituent list and its methodology; verify from DSE before use.
+    ratio_denominator: "total_assets"
+    prohibited_sectors:
+      - "BANK"
+      - "FINANCIAL INSTITUTIONS"
+      - "INSURANCE"
+    prohibited_keywords:
+      - "alcohol"
+      - "tobacco"
+      - "gambling"
+      - "pork"
+    ratio_rules:
+      - metric: "interest_bearing_debt"
+        max_ratio: 0.33
+        description: "Placeholder threshold pending confirmation of the official methodology."
+
+disclaimer: >
+  This is a data screen under the named methodology and data date. It is not a
+  religious certification, not a fatwa, and not a substitute for consulting a
+  qualified scholar. Where data is missing or activity is ambiguous, the result
+  is "unable to determine" — never an assumed pass.

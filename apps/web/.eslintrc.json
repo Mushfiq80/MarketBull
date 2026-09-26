@@ -1,0 +1,30 @@
+{
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "rules": {
+    "react/no-unescaped-entities": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+    ],
+    "// no-explicit-any": "Downgraded to a warning: several presentational components take joined DB row shapes that have no generated type yet. Tracked in babull-docs/07-work-update.md — replace with generated row types, then restore to error.",
+    "@typescript-eslint/no-explicit-any": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["src/lib/domain/**/*.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["next/*", "react", "react-dom", "@/components/*", "@/db/*"],
+                "message": "lib/domain must stay framework-free and persistence-free."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

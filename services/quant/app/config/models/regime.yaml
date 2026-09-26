@@ -1,0 +1,54 @@
+# Market Regime Engine configuration.
+#
+# Weights are hypotheses inherited from the research blueprint. They require
+# historical testing against dated DSE cycles before they mean anything.
+#
+# Two outputs, never merged:
+#   - state estimator (this file)
+#   - transition forecast (gated on calibration.yaml criteria)
+
+version: "regime-0.1.0"
+status: "unvalidated_hypothesis"
+
+weights:
+  trend: 0.25
+  breadth: 0.20
+  liquidity: 0.20
+  earnings_valuation: 0.20
+  macro: 0.15
+
+# Composite score thresholds → base state. Refined by structural rules in
+# regime.py (e.g. strong index + weak breadth ⇒ distribution).
+bands:
+  bear: 0
+  late_bear_stress: 15
+  early_recovery: 35
+  confirmed_recovery: 48
+  bull: 58
+  strong_bull: 75
+
+anchor_index: "DSEX"
+supplementary_indices: ["DS30", "DSES"]
+
+cycle_dating:
+  # Benchmark labels for RESEARCH COMPARISON ONLY — never the live label.
+  threshold: 0.20
+  min_phase_sessions: 60
+  note: "Pagan–Sossounov style. Definitions vary between studies; do not treat as ground truth."
+
+transition_forecast:
+  horizons_sessions: [20, 60, 120]
+  calibration_required: true
+  min_sample: 200
+  max_brier: 0.22
+  max_calibration_gap: 0.15
+
+challengers:
+  hmm:
+    enabled: false
+    n_states: 3
+  promotion_criteria:
+    primary_metric: "brier_score"
+    min_oos_improvement: 0.05
+    max_false_transition_rate: 0.25
+    min_oos_sample: 200

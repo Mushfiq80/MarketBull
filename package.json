@@ -1,0 +1,41 @@
+{
+  "name": "babull",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-assisted investment intelligence for the Dhaka Stock Exchange",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "npm run dev --workspace=@babull/web",
+    "build": "npm run build --workspace=@babull/web",
+    "start": "npm run start --workspace=@babull/web",
+    "lint": "npm run lint --workspace=@babull/web",
+    "typecheck": "npm run typecheck --workspace=@babull/web",
+    "test": "npm run test --workspace=@babull/web",
+    "db:generate": "npm run db:generate --workspace=@babull/web",
+    "db:migrate": "npm run db:migrate --workspace=@babull/web",
+    "db:push": "npm run db:push --workspace=@babull/web",
+    "db:studio": "npm run db:studio --workspace=@babull/web",
+    "db:seed:reference": "npm run db:seed:reference --workspace=@babull/web",
+    "db:seed:sample": "npm run db:seed:sample --workspace=@babull/web",
+    "db:clear:sample": "npm run db:clear:sample --workspace=@babull/web",
+    "viz:validate": "npm run viz:validate --workspace=@babull/web",
+    "fixtures:capture": "node scripts/capture-fixture.mjs",
+    "quant:dev": "cd services/quant && uvicorn app.main:app --reload --port 8000",
+    "stack:up": "docker compose up -d postgres"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  },
+  "prettier": {
+    "semi": true,
+    "singleQuote": false,
+    "printWidth": 100,
+    "trailingComma": "all"
+  }
+}

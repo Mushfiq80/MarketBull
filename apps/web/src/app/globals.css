@@ -1,0 +1,261 @@
+@import "tailwindcss";
+
+/* ===========================================================================
+   BABull design tokens
+   Dark is the default theme (set in ThemeProvider); light is fully supported.
+   Chart palette is the validated reference palette, re-validated against
+   BABull's own surfaces. See babull-docs/05-design-system.md.
+   Do not change a chart colour without re-running `npm run viz:validate`.
+   =========================================================================== */
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 0.75rem;
+
+  /* --- surfaces & ink (light) --------------------------------------------- */
+  --background: #f9f9f7; /* page plane */
+  --foreground: #0b0b0b; /* primary ink */
+  --card: #fcfcfb; /* chart / card surface */
+  --card-foreground: #0b0b0b;
+  --popover: #ffffff; /* raised surface */
+  --popover-foreground: #0b0b0b;
+
+  --primary: #2a78d6;
+  --primary-foreground: #ffffff;
+  --secondary: #f0efec;
+  --secondary-foreground: #52514e;
+  --muted: #f0efec;
+  --muted-foreground: #898781; /* axis / label ink */
+  --accent: #eaf1fc;
+  --accent-foreground: #1c5cab;
+  --destructive: #d03b3b;
+  --destructive-foreground: #ffffff;
+
+  --border: rgba(11, 11, 11, 0.1);
+  --input: rgba(11, 11, 11, 0.14);
+  --ring: #2a78d6;
+
+  --ink-secondary: #52514e;
+  --grid: #e1e0d9; /* hairline gridline */
+  --axis: #c3c2b7; /* baseline / axis */
+
+  /* --- market semantics (reserved — never used as series colours) --------- */
+  --gain: #0ca30c;
+  --loss: #d03b3b;
+  --flat: #898781;
+  --limit: #c98500;
+
+  /* --- status (reserved) -------------------------------------------------- */
+  --status-good: #0ca30c;
+  --status-warning: #fab219;
+  --status-serious: #ec835a;
+  --status-critical: #d03b3b;
+
+  /* --- categorical chart palette — FIXED ORDER, NEVER CYCLED -------------- */
+  --chart-1: #2a78d6; /* blue    */
+  --chart-2: #eb6834; /* orange  */
+  --chart-3: #1baf7a; /* aqua    */
+  --chart-4: #eda100; /* yellow  */
+  --chart-5: #e87ba4; /* magenta */
+  --chart-6: #008300; /* green   */
+  --chart-7: #4a3aa7; /* violet  */
+  --chart-8: #e34948; /* red     */
+
+  /* --- sequential ramp (blue, light → dark) ------------------------------- */
+  --seq-100: #cde2fb;
+  --seq-200: #9ec5f4;
+  --seq-300: #6da7ec;
+  --seq-400: #3987e5;
+  --seq-500: #256abf;
+  --seq-600: #184f95;
+  --seq-700: #0d366b;
+
+  /* --- diverging (blue ↔ red, neutral gray midpoint) ---------------------
+     Extremes are the darker steps in light mode. Equal step count per arm. */
+  --div-neg-2: #184f95;
+  --div-neg-1: #86b6ef;
+  --div-mid: #f0efec;
+  --div-pos-1: #e88b8b;
+  --div-pos-2: #b32d2d;
+}
+
+.dark {
+  /* --- surfaces & ink (dark) --------------------------------------------- */
+  --background: #0d0d0f;
+  --foreground: #ffffff;
+  --card: #15161a;
+  --card-foreground: #ffffff;
+  --popover: #1d1e23;
+  --popover-foreground: #ffffff;
+
+  --primary: #3987e5;
+  --primary-foreground: #0d0d0f;
+  --secondary: #22242a;
+  --secondary-foreground: #c3c2b7;
+  --muted: #1d1e23;
+  --muted-foreground: #898781;
+  --accent: #1b2b40;
+  --accent-foreground: #9ec5f4;
+  --destructive: #d03b3b;
+  --destructive-foreground: #ffffff;
+
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.14);
+  --ring: #3987e5;
+
+  --ink-secondary: #c3c2b7;
+  --grid: #2c2c2a;
+  --axis: #383835;
+
+  /* market semantics keep their hues — both clear 3:1 on the dark surface */
+  --gain: #0ca30c;
+  --loss: #d03b3b;
+  --flat: #898781;
+  --limit: #c98500;
+
+  --status-good: #0ca30c;
+  --status-warning: #fab219;
+  --status-serious: #ec835a;
+  --status-critical: #d03b3b;
+
+  /* same eight hues, stepped for the dark surface — validated as a set */
+  --chart-1: #3987e5;
+  --chart-2: #d95926;
+  --chart-3: #199e70;
+  --chart-4: #c98500;
+  --chart-5: #d55181;
+  --chart-6: #008300;
+  --chart-7: #9085e9;
+  --chart-8: #e66767;
+
+  --seq-100: #0d366b;
+  --seq-200: #104281;
+  --seq-300: #184f95;
+  --seq-400: #256abf;
+  --seq-500: #3987e5;
+  --seq-600: #6da7ec;
+  --seq-700: #9ec5f4;
+
+  /* Extremes are the brighter steps in dark mode. Equal step count per arm. */
+  --div-neg-2: #9ec5f4;
+  --div-neg-1: #3987e5;
+  --div-mid: #383835;
+  --div-pos-1: #d03b3b;
+  --div-pos-2: #e66767;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-ink-secondary: var(--ink-secondary);
+  --color-grid: var(--grid);
+  --color-axis: var(--axis);
+
+  --color-gain: var(--gain);
+  --color-loss: var(--loss);
+  --color-flat: var(--flat);
+  --color-limit: var(--limit);
+
+  --color-status-good: var(--status-good);
+  --color-status-warning: var(--status-warning);
+  --color-status-serious: var(--status-serious);
+  --color-status-critical: var(--status-critical);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+  --color-chart-7: var(--chart-7);
+  --color-chart-8: var(--chart-8);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "cv11";
+  }
+
+  /* Every column of numbers aligns. Hero figures stay proportional. */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Visible focus on everything interactive — accessibility floor. */
+  :focus-visible {
+    @apply outline-ring outline-2 outline-offset-2;
+  }
+
+  /* Recessive scrollbars — this is a dense dashboard. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--axis) transparent;
+  }
+}
+
+@layer utilities {
+  /* Hairline card used everywhere; no shadow in dark mode by design. */
+  .surface {
+    @apply bg-card border-border rounded-lg border;
+  }
+
+  /* Texture fill — the accessibility channel for CVD / print / forced-colors.
+     Never decorative, never on by default. */
+  .texture-45 {
+    background-image: repeating-linear-gradient(
+      45deg,
+      currentColor 0 1px,
+      transparent 1px 5px
+    );
+  }
+  .texture-135 {
+    background-image: repeating-linear-gradient(
+      135deg,
+      currentColor 0 1px,
+      transparent 1px 5px
+    );
+  }
+}
+
+@media print {
+  /* Print gets the light palette and the texture channel. */
+  :root {
+    color-scheme: light;
+  }
+}

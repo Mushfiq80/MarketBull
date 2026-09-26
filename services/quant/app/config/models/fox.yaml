@@ -1,0 +1,146 @@
+# FOX model configuration.
+#
+# EVERY WEIGHT HERE IS A HYPOTHESIS. None has been validated on DSE data.
+# They live in configuration rather than code so that validation can change
+# them without a deploy, and so a score can be stamped with the exact config
+# that produced it.
+#
+# Before trusting any of these: run the walk-forward backtest, check the rank
+# IC and bucket spread, and slice by regime, sector and liquidity.
+
+version: "fox-0.1.0"
+status: "unvalidated_hypothesis"
+
+horizons:
+  short:
+    description: "5–20 trading sessions"
+    target_outcome: "10-session forward return, market- and sector-adjusted, net of costs"
+    pillar_weights:
+      F: 0.20
+      O: 0.55
+      X: 0.25
+    factor_weights:
+      F:
+        pe: 0.4
+        pb: 0.3
+        net_margin: 0.3
+      O:
+        rs_21: 0.30
+        trend_structure: 0.20
+        turnover_ratio: 0.20
+        active_session_ratio: 0.10
+        catalyst_proximity: 0.20
+      X:
+        liquidity_risk: 0.40
+        realized_vol_63: 0.25
+        governance_exposure: 0.20
+        data_uncertainty: 0.15
+
+  medium:
+    description: "1–6 months"
+    target_outcome: "3-month forward return, sector-adjusted"
+    pillar_weights:
+      F: 0.40
+      O: 0.35
+      X: 0.25
+    factor_weights:
+      F:
+        revenue_growth_yoy: 0.15
+        eps_growth_yoy: 0.10
+        net_margin: 0.15
+        roe: 0.15
+        cash_conversion: 0.10
+        pe: 0.15
+        pb: 0.10
+        dividend_yield: 0.10
+      O:
+        rs_63: 0.30
+        rs_21: 0.15
+        trend_structure: 0.15
+        turnover_ratio: 0.15
+        catalyst_proximity: 0.25
+      X:
+        liquidity_risk: 0.30
+        governance_exposure: 0.25
+        realized_vol_63: 0.15
+        max_drawdown_252: 0.15
+        data_uncertainty: 0.15
+
+  long:
+    description: "1–5 years"
+    target_outcome: "3-year annualised total return including dividends"
+    pillar_weights:
+      F: 0.55
+      O: 0.15
+      X: 0.30
+    factor_weights:
+      F:
+        revenue_growth_yoy: 0.15
+        net_margin: 0.15
+        roe: 0.20
+        roa: 0.10
+        cash_conversion: 0.15
+        net_debt_to_equity: 0.10
+        pe: 0.075
+        pb: 0.075
+        dividend_yield: 0.10
+      O:
+        rs_126: 0.60
+        trend_structure: 0.40
+      X:
+        governance_exposure: 0.35
+        liquidity_risk: 0.20
+        net_debt_to_equity: 0.15
+        max_drawdown_252: 0.15
+        data_uncertainty: 0.15
+
+# Sector-specific factor substitutions. A ratio that is meaningless for a
+# sector is DISABLED, not computed and quietly ignored.
+sector_overrides:
+  bank:
+    F:
+      net_interest_margin: 0.20
+      npl_ratio: 0.25
+      provision_coverage: 0.15
+      capital_adequacy: 0.15
+      roe: 0.15
+      pb: 0.10
+  nbfi:
+    F:
+      net_interest_margin: 0.20
+      npl_ratio: 0.30
+      provision_coverage: 0.15
+      capital_adequacy: 0.15
+      roe: 0.10
+      pb: 0.10
+  insurance:
+    F:
+      combined_ratio: 0.35
+      roe: 0.25
+      pb: 0.20
+      dividend_yield: 0.20
+
+normalization:
+  method: "percentile_rank"
+  winsorize: [2.0, 98.0]
+  by: ["sector", "date"]
+  min_peer_group_size: 3
+  # A pillar built on less than 40% of its intended weight is not reported.
+  min_pillar_coverage: 0.40
+
+gates:
+  max_days_to_liquidate:
+    short: 5
+    medium: 15
+    long: 30
+  max_audited_age_days: 545
+  regulatory_min_severity: "high"
+
+conviction:
+  weights:
+    authority: 0.20
+    freshness: 0.20
+    completeness: 0.35
+    agreement: 0.15
+    calibration: 0.10
+  freshness_budget_days: 3
